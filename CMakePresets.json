@@ -1,0 +1,66 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "macos",
+      "displayName": "macOS native tests",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/macos"
+    },
+    {
+      "name": "stm32-m4",
+      "displayName": "STM32 Cortex-M4 portable test library",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/stm32-m4",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/arm-none-eabi.cmake",
+      "cacheVariables": {
+        "STM32_CPU": "cortex-m4"
+      }
+    },
+    {
+      "name": "stm32-m7",
+      "displayName": "STM32 Cortex-M7 portable test library",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/stm32-m7",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/arm-none-eabi.cmake",
+      "cacheVariables": {
+        "STM32_CPU": "cortex-m7"
+      }
+    },
+    {
+      "name": "esp32",
+      "displayName": "ESP32 test firmware (ESP-IDF)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/esp32-unified",
+      "cacheVariables": {
+        "DSP_PLATFORM": "esp32",
+        "IDF_TARGET": "esp32",
+        "SDKCONFIG": "${sourceDir}/build/esp32-unified/sdkconfig"
+      },
+      "environment": {
+        "IDF_PATH": "$env{HOME}/esp/v5.5.1/esp-idf",
+        "IDF_PYTHON_ENV_PATH": "$env{HOME}/.espressif/python_env/idf5.5_py3.13_env",
+        "ESP_ROM_ELF_DIR": "$env{HOME}/.espressif/tools/esp-rom-elfs/20241011",
+        "PATH": "$env{HOME}/.espressif/python_env/idf5.5_py3.13_env/bin:$env{HOME}/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin:$env{HOME}/esp/v5.5.1/esp-idf/tools:$penv{PATH}"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "macos", "configurePreset": "macos" },
+    { "name": "stm32-m4", "configurePreset": "stm32-m4" },
+    { "name": "stm32-m7", "configurePreset": "stm32-m7" },
+    { "name": "esp32", "configurePreset": "esp32" }
+  ],
+  "testPresets": [
+    {
+      "name": "macos",
+      "configurePreset": "macos",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}
